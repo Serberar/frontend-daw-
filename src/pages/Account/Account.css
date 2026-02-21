@@ -1,0 +1,246 @@
+.accountContainer {
+  max-width: 700px;
+  margin: 90px auto 40px;
+  padding: 40px;
+  background-color: #16213e;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.accountHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.accountHeader h1 {
+  font-size: 24px;
+  color: #e94560;
+}
+
+.welcome {
+  color: #aaa;
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.welcome strong {
+  color: #e0e0e0;
+}
+
+/* ── Personal data section ── */
+.personalDataContainer {
+  background-color: #1a1a2e;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #2a2a4a;
+}
+
+.personalDataContainer h2 {
+  font-size: 17px;
+  color: #e0e0e0;
+  margin-bottom: 20px;
+}
+
+/* ── Editable field ── */
+.editableField {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.editableField label {
+  font-size: 14px;
+  color: #aaa;
+  flex: 0 0 120px;
+}
+
+.editableField span {
+  color: #e0e0e0;
+  font-size: 14px;
+  flex: 1;
+}
+
+.editableField input {
+  flex: 1;
+  padding: 8px 12px;
+  background-color: #16213e;
+  border: 1px solid #e94560;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 14px;
+  outline: none;
+}
+
+.readonlyField {
+  opacity: 0.6;
+}
+
+/* ── Buttons ── */
+.editBtn {
+  background-color: transparent;
+  color: #e94560;
+  border: 1px solid #e94560;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.editBtn:hover {
+  background-color: #e94560;
+  color: #fff;
+}
+
+.saveBtn {
+  background-color: #2a9d5c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.saveBtn:hover {
+  background-color: #1e7a45;
+}
+
+.cancelBtn {
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancelBtn:hover {
+  background-color: #333;
+}
+
+/* ── Logout ── */
+.logoutBtn {
+  background-color: transparent;
+  color: #e94560;
+  border: 1px solid #e94560;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: #e94560;
+  color: #fff;
+}
+
+/* ── Save message ── */
+.saveMessage {
+  margin-top: 20px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.saveMessage.success {
+  background-color: #1e3a2a;
+  color: #4caf50;
+}
+
+.saveMessage.error {
+  background-color: #3a1e1e;
+  color: #e94560;
+}
+
+/* ── Rental history ── */
+.historyContainer {
+  margin-top: 24px;
+  background-color: #1a1a2e;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #2a2a4a;
+}
+
+.historyContainer h2 {
+  font-size: 17px;
+  color: #e0e0e0;
+  margin-bottom: 16px;
+}
+
+.historyEmpty {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.historyTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.historyTable th,
+.historyTable td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #2a2a4a;
+}
+
+.historyTable th {
+  color: #e94560;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.historyTable td {
+  color: #ccc;
+}
+
+.activeStatus {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.returnBtn {
+  background-color: transparent;
+  color: #e94560;
+  border: 1px solid #e94560;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.returnBtn:hover {
+  background-color: #e94560;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .accountContainer {
+    padding: 20px;
+    margin: 80px 16px 40px;
+  }
+
+  .editableField {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .editableField label {
+    flex: none;
+  }
+}

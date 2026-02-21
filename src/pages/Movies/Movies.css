@@ -1,0 +1,573 @@
+/* ── Movies page ── */
+.moviesPage {
+  padding: 90px 48px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.moviesTitle {
+  text-align: center;
+  font-size: 28px;
+  color: #e94560;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+/* ── Layout: sidebar + main ── */
+.catalogueLayout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* ── Genre sidebar ── */
+.genreSidebar {
+  width: 210px;
+  min-width: 210px;
+  position: sticky;
+  top: 82px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+  background: linear-gradient(160deg, #16213e, #1a1a35);
+  border-radius: 12px;
+  border: 1px solid #2a2a4a;
+  padding: 8px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a4a transparent;
+}
+
+.genreSidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.genreSidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.genreSidebar::-webkit-scrollbar-thumb {
+  background-color: #2a2a4a;
+  border-radius: 4px;
+}
+
+/* ── Accordion section ── */
+.sidebarSection {
+  padding: 0;
+}
+
+.sidebarSectionHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #e0e0e0;
+}
+
+.sidebarSectionHeader:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.sidebarLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e94560;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.sidebarArrow {
+  font-size: 13px;
+  color: #555;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.sidebarArrow.open {
+  transform: rotate(180deg);
+}
+
+/* ── Collapsible content ── */
+.sidebarCollapsible {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.28s ease;
+}
+
+.sidebarCollapsible.open {
+  max-height: 400px;
+}
+
+.genresCollapsible.open {
+  max-height: calc(100vh - 320px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a4a transparent;
+}
+
+.genresCollapsible.open::-webkit-scrollbar {
+  width: 3px;
+}
+
+.genresCollapsible.open::-webkit-scrollbar-thumb {
+  background-color: #2a2a4a;
+  border-radius: 3px;
+}
+
+/* ── Divider ── */
+.sidebarDivider {
+  height: 1px;
+  background-color: #2a2a4a;
+  margin: 4px 0;
+}
+
+/* ── Genre list ── */
+.genreList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 8px 10px;
+}
+
+.genreItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: 7px;
+  font-size: 13px;
+  color: #888;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.genreItem:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ddd;
+}
+
+.genreItem.active {
+  background-color: rgba(233, 69, 96, 0.15);
+  color: #e94560;
+  font-weight: 600;
+}
+
+.genreDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.genreItem.active .genreDot {
+  opacity: 1;
+}
+
+/* ── Year filter ── */
+.yearFilter {
+  padding: 6px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.yearRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.yearLabel {
+  font-size: 12px;
+  color: #777;
+  flex-shrink: 0;
+}
+
+.yearSelect {
+  flex: 1;
+  background-color: #0f1a30;
+  border: 1px solid #2a2a4a;
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 12px;
+  padding: 5px 6px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.yearSelect:focus {
+  border-color: #e94560;
+}
+
+.yearReset {
+  background: none;
+  border: none;
+  color: #e94560;
+  font-size: 11px;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  margin-top: 2px;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+
+.yearReset:hover {
+  opacity: 1;
+}
+
+/* ── Main catalogue area ── */
+.catalogueMain {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Search bar ── */
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #16213e;
+  border-radius: 10px;
+  padding: 0 16px;
+  margin-bottom: 24px;
+  border: 1px solid #2a2a4a;
+  transition: border-color 0.2s;
+}
+
+.searchBar:focus-within {
+  border-color: #e94560;
+}
+
+.searchIcon {
+  font-size: 15px;
+  margin-right: 10px;
+  opacity: 0.4;
+}
+
+.searchInput {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: #e0e0e0;
+  font-size: 14px;
+  padding: 13px 0;
+}
+
+.searchInput::placeholder {
+  color: #555;
+}
+
+.searchClear {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.searchClear:hover {
+  color: #e94560;
+}
+
+/* ── No results ── */
+.noResults {
+  color: #555;
+  text-align: center;
+  margin-top: 60px;
+  font-size: 14px;
+}
+
+/* ── Grid ── */
+.moviesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+/* ── Card ── */
+.movieCard {
+  cursor: pointer;
+  background-color: #16213e;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.movieCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.movieImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+}
+
+.movieImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+
+.movieCard:hover .movieImage {
+  transform: scale(1.05);
+}
+
+.movieOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(233, 69, 96, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.movieCard:hover .movieOverlay {
+  opacity: 1;
+}
+
+.movieTitle {
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #e0e0e0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Modal overlay ── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* ── Modal box ── */
+.modalContent {
+  background-color: #16213e;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.modalClose {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1;
+  transition: color 0.2s;
+}
+
+.modalClose:hover {
+  color: #e94560;
+}
+
+.modalBody {
+  display: flex;
+  gap: 24px;
+  padding: 30px;
+}
+
+.modalImage {
+  width: 160px;
+  min-width: 160px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.modalInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalInfo h2 {
+  font-size: 22px;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.modalMeta {
+  color: #aaa;
+  font-size: 13px;
+}
+
+.modalGenres {
+  color: #e94560;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.modalPlot {
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.modalActors {
+  color: #bbb;
+  font-size: 13px;
+}
+
+/* ── Rent section ── */
+.rentSection {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #2a2a4a;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rentSection label {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.daysControl {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.daysBtn {
+  background-color: #e94560;
+  color: #fff;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daysBtn:hover {
+  background-color: #c73652;
+}
+
+.daysValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  min-width: 24px;
+  text-align: center;
+}
+
+.price {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.price span {
+  font-size: 12px;
+  color: #888;
+  font-weight: 400;
+}
+
+.rentBtn {
+  background-color: #e94560;
+  color: #fff;
+  border: none;
+  padding: 12px 0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.rentBtn:hover {
+  background-color: #c73652;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .catalogueLayout {
+    flex-direction: column;
+  }
+
+  .genreSidebar {
+    width: 100%;
+    min-width: unset;
+    position: static;
+  }
+
+  .genreList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .genreItem {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid #2a2a4a;
+    font-size: 13px;
+  }
+
+  .genreItem.active {
+    border-color: #e94560;
+    background-color: rgba(233, 69, 96, 0.12);
+  }
+}
+
+@media (max-width: 540px) {
+  .moviesPage {
+    padding: 90px 20px 40px;
+  }
+
+  .modalBody {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .modalImage {
+    width: 120px;
+    height: 180px;
+    min-width: unset;
+  }
+}

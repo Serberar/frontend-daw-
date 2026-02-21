@@ -1,0 +1,14 @@
+node_modules/
+.env
+build/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/

@@ -1,0 +1,333 @@
+.registerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 80px 16px 40px;
+}
+
+/* ── Step indicator ── */
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 28px;
+}
+
+.stepDot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #2a2a4a;
+  color: #555;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.stepDot.active {
+  background-color: #e94560;
+  border-color: #e94560;
+  color: #fff;
+}
+
+.stepLine {
+  width: 60px;
+  height: 2px;
+  background-color: #2a2a4a;
+}
+
+/* ── Register form (reuses login field styles) ── */
+.registerForm {
+  background-color: #16213e;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  width: 480px;
+  max-width: 94vw;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.registerForm h1 {
+  text-align: center;
+  font-size: 24px;
+  color: #e94560;
+  margin-bottom: 0;
+}
+
+.registerSubtitle {
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  margin-top: -8px;
+}
+
+.registerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.registerLoginLink {
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.registerLoginLink a {
+  color: #e94560;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ── Card preview ── */
+.cardPreview {
+  background: linear-gradient(135deg, #1a1a3e 0%, #0d2137 60%, #1a1a2e 100%);
+  border-radius: 16px;
+  padding: 24px 28px;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+
+.cardPreview::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 160px;
+  height: 160px;
+  background: rgba(233, 69, 96, 0.08);
+  border-radius: 50%;
+}
+
+.cardPreview::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -20px;
+  width: 200px;
+  height: 200px;
+  background: rgba(233, 69, 96, 0.04);
+  border-radius: 50%;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardChip {
+  width: 44px;
+  height: 32px;
+  background: linear-gradient(135deg, #c8a951 0%, #e8c96a 40%, #c8a951 60%, #a88831 100%);
+  border-radius: 6px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.cardChip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(0,0,0,0.2);
+  transform: translateY(-50%);
+}
+
+.cardChip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(0,0,0,0.2);
+  transform: translateX(-50%);
+}
+
+.cardBrand {
+  font-size: 22px;
+  font-weight: 900;
+  font-style: italic;
+  color: #fff;
+  letter-spacing: 2px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.cardNumberDisplay {
+  display: flex;
+  gap: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  margin: 8px 0;
+}
+
+.cardBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cardHolderSection,
+.cardExpirySection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cardLabel {
+  font-size: 9px;
+  color: rgba(255,255,255,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cardValue {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── Card input ── */
+.cardInput {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+}
+
+/* ── Card details row ── */
+.cardDetailsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Secure note ── */
+.secureNote {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  padding: 8px 12px;
+  background-color: #1a1a2e;
+  border-radius: 6px;
+  border: 1px solid #2a2a4a;
+}
+
+.lockIcon {
+  margin-right: 4px;
+}
+
+/* ── Actions (back + submit) ── */
+.registerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.backBtn {
+  flex: 0 0 auto;
+  padding: 12px 20px;
+  background-color: transparent;
+  color: #aaa;
+  border: 1px solid #555;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.backBtn:hover {
+  border-color: #e94560;
+  color: #e94560;
+}
+
+.registerActions .loginBtn {
+  flex: 1;
+  margin-top: 0;
+}
+
+/* ── Success screen ── */
+.registerSuccess {
+  background-color: #16213e;
+  padding: 48px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  max-width: 440px;
+  width: 94vw;
+}
+
+.successIcon {
+  width: 64px;
+  height: 64px;
+  background-color: #2a9d5c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: #fff;
+  margin: 0 auto 20px;
+}
+
+.registerSuccess h2 {
+  font-size: 22px;
+  color: #e94560;
+  margin-bottom: 12px;
+}
+
+.registerSuccess p {
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.registerSuccess strong {
+  color: #e0e0e0;
+}
+
+.redirectNote {
+  color: #555 !important;
+  font-size: 12px !important;
+  margin-top: 16px !important;
+}
+
+@media (max-width: 540px) {
+  .registerForm {
+    padding: 28px 20px;
+  }
+
+  .registerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardDetailsRow {
+    grid-template-columns: 1fr;
+  }
+
+  .cardNumberDisplay {
+    font-size: 16px;
+    gap: 10px;
+    letter-spacing: 2px;
+  }
+}
