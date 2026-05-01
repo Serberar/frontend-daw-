@@ -14,8 +14,8 @@ const Login = () => {
     setErrorMessage('')
     setNotVerified(false)
     try {
-      await login(e.target.email.value, e.target.password.value)
-      navigate('/cliente')
+      const user = await login(e.target.email.value, e.target.password.value)
+      navigate(user.role === 'ADMIN' ? '/admin' : '/')
     } catch (err) {
       if (err.response?.status === 403) setNotVerified(true)
       else setErrorMessage(err.response?.data?.error || 'Error al iniciar sesión.')

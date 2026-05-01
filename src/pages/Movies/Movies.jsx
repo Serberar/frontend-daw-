@@ -1,32 +1,50 @@
-import { useContext, useState, useMemo } from 'react'
+import { useContext, useState, useMemo, useRef, useEffect } from 'react'
 import { myContext } from '../../components/Context'
 import './Movies.css'
 
-const GENRE_ES = {
-  Action: 'Acción',
-  Adventure: 'Aventura',
-  Animation: 'Animación',
-  Biography: 'Biografía',
-  Comedy: 'Comedia',
-  Crime: 'Crimen',
-  Drama: 'Drama',
-  Family: 'Familia',
-  Fantasy: 'Fantasía',
-  'Film-Noir': 'Cine Negro',
-  History: 'Historia',
-  Horror: 'Terror',
-  Music: 'Música',
-  Musical: 'Musical',
-  Mystery: 'Misterio',
-  Romance: 'Romance',
-  'Sci-Fi': 'Ciencia Ficción',
-  Thriller: 'Suspense',
-  War: 'Guerra',
-  Western: 'Western',
+const getPrice = (movie) => {
+  if (!movie.genres?.length) return 2
+  return Math.max(...movie.genres.map(g => g.price ?? 2))
+}
+
+const MovieCard = ({ movie, onClick }) => (
+  <div className='movieCard' onClick={onClick}>
+    <div className='movieImageWrapper'>
+      <img
+        src={movie.posterUrl}
+        alt={movie.title}
+        className='movieImage'
+      />
+      <div className='movieOverlay'><span>Ver detalles</span></div>
+    </div>
+    <p className='movieTitle'>{movie.title}</p>
+  </div>
+)
+
+/* ── Horizontal row with scroll arrows ── */
+const GenreRow = ({ genre, movies, openModal }) => {
+  const scrollRef = useRef(null)
+  const scroll = (dir) => scrollRef.current?.scrollBy({ left: dir * 640, behavior: 'smooth' })
+
+  return (
+    <section className='genreRow'>
+      <h2 className='genreRowTitle'>{genre.name}</h2>
+      <div className='genreRowWrapper'>
+        <button className='scrollArrow scrollArrowLeft' onClick={() => scroll(-1)}>‹</button>
+        <div className='genreRowScroll' ref={scrollRef}>
+          {movies.map(movie => (
+            <MovieCard key={movie.id} movie={movie} onClick={() => openModal(movie)} />
+          ))}
+        </div>
+        <button className='scrollArrow scrollArrowRight' onClick={() => scroll(1)}>›</button>
+      </div>
+    </section>
+  )
 }
 
 const Modal = ({ movie, onClose, onRent }) => {
   const [days, setDays] = useState(1)
+  const pricePerDay = getPrice(movie)
 
   return (
     <div className='modalOverlay' onClick={onClose}>
@@ -37,19 +55,13 @@ const Modal = ({ movie, onClose, onRent }) => {
             src={movie.posterUrl}
             alt={movie.title}
             className='modalImage'
-            onError={e => { e.target.src = 'https://via.placeholder.com/150x225.png?text=Sin+imagen' }}
           />
           <div className='modalInfo'>
             <h2>{movie.title}</h2>
-            <p className='modalMeta'>
-              {movie.year} · {movie.runtime} min · {movie.director}
-            </p>
-            <p className='modalGenres'>
-              {movie.genres.map(g => GENRE_ES[g] || g).join(', ')}
-            </p>
+            <p className='modalMeta'>{movie.year} · {movie.runtime} min · {movie.director}</p>
+            <p className='modalGenres'>{movie.genres.map(g => g.name).join(', ')}</p>
             <p className='modalPlot'>{movie.plot}</p>
             <p className='modalActors'><strong>Reparto:</strong> {movie.actors}</p>
-
             <div className='rentSection'>
               <label>Días de alquiler:</label>
               <div className='daysControl'>
@@ -57,10 +69,8 @@ const Modal = ({ movie, onClose, onRent }) => {
                 <span className='daysValue'>{days}</span>
                 <button className='daysBtn' onClick={() => setDays(d => Math.min(7, d + 1))}>+</button>
               </div>
-              <p className='price'>Total: {days * 2}€ <span>(2€/día)</span></p>
-              <button className='rentBtn' onClick={() => onRent(movie, days)}>
-                Alquilar
-              </button>
+              <p className='price'>Total: {(days * pricePerDay).toFixed(2)}€ <span>({pricePerDay.toFixed(2)}€/día)</span></p>
+              <button className='rentBtn' onClick={() => onRent(movie, days, pricePerDay)}>Alquilar</button>
             </div>
           </div>
         </div>
@@ -72,114 +82,100 @@ const Modal = ({ movie, onClose, onRent }) => {
 const Movies = () => {
   const { state, openModal, closeModal, rentMovie } = useContext(myContext)
   const [search, setSearch] = useState('')
-  const [selectedGenre, setSelectedGenre] = useState(null)
+  const [selectedGenreId, setSelectedGenreId] = useState(null)
   const [yearFrom, setYearFrom] = useState('')
   const [yearTo, setYearTo] = useState('')
-  const [genresOpen, setGenresOpen] = useState(true)
-  const [yearOpen, setYearOpen] = useState(true)
+  const [heroIndex, setHeroIndex]         = useState(0)
+  const [heroPaused, setHeroPaused]       = useState(false)
 
-  const genres = useMemo(() => {
-    const set = new Set()
-    state.movies.forEach(m => m.genres.forEach(g => set.add(g)))
-    return [...set].sort((a, b) => (GENRE_ES[a] || a).localeCompare(GENRE_ES[b] || b))
-  }, [state.movies])
+  const featuredMovies = state.featuredMovies
+  const currentFeatured = featuredMovies.length > 0
+    ? featuredMovies[heroIndex % featuredMovies.length]
+    : null
+
+  useEffect(() => {
+    if (featuredMovies.length <= 1 || heroPaused) return
+    const t = setInterval(() => setHeroIndex(i => (i + 1) % featuredMovies.length), 5500)
+    return () => clearInterval(t)
+  }, [featuredMovies.length, heroPaused])
 
   const years = useMemo(() => {
-    const set = new Set(state.movies.map(m => m.year))
+    const set = new Set(state.movies.map(m => m.year).filter(Boolean))
     return [...set].sort()
   }, [state.movies])
 
   const filteredMovies = useMemo(() => {
     return state.movies.filter(movie => {
-      const matchesGenre = !selectedGenre || movie.genres.includes(selectedGenre)
+      const matchesGenre  = !selectedGenreId || movie.genres.some(g => g.id === selectedGenreId)
       const matchesSearch = !search || movie.title.toLowerCase().includes(search.toLowerCase())
-      const year = parseInt(movie.year)
-      const matchesFrom = !yearFrom || year >= parseInt(yearFrom)
-      const matchesTo = !yearTo || year <= parseInt(yearTo)
+      const year          = parseInt(movie.year)
+      const matchesFrom   = !yearFrom || year >= parseInt(yearFrom)
+      const matchesTo     = !yearTo   || year <= parseInt(yearTo)
       return matchesGenre && matchesSearch && matchesFrom && matchesTo
     })
-  }, [state.movies, search, selectedGenre, yearFrom, yearTo])
+  }, [state.movies, search, selectedGenreId, yearFrom, yearTo])
+
+  const moviesByGenre = useMemo(() => {
+    return state.genres
+      .map(genre => ({
+        genre,
+        movies: state.movies.filter(m => m.genres.some(g => g.id === genre.id))
+      }))
+      .filter(row => row.movies.length > 0)
+  }, [state.movies, state.genres])
+
+  const isFiltering = search || selectedGenreId || yearFrom || yearTo
 
   return (
     <div className='moviesPage'>
-      <h1 className='moviesTitle'>Catálogo de películas</h1>
 
-      <div className='catalogueLayout'>
-        <aside className='genreSidebar'>
-
-          {/* ── Año ── */}
-          <div className='sidebarSection'>
-            <button className='sidebarSectionHeader' onClick={() => setYearOpen(o => !o)}>
-              <span className='sidebarLabel'>Año</span>
-              <span className={`sidebarArrow ${yearOpen ? 'open' : ''}`}>▾</span>
-            </button>
-            <div className={`sidebarCollapsible ${yearOpen ? 'open' : ''}`}>
-              <div className='yearFilter'>
-                <div className='yearRow'>
-                  <label className='yearLabel'>Desde</label>
-                  <select
-                    className='yearSelect'
-                    value={yearFrom}
-                    onChange={e => setYearFrom(e.target.value)}
-                  >
-                    <option value=''>—</option>
-                    {years.map(y => <option key={y} value={y}>{y}</option>)}
-                  </select>
-                </div>
-                <div className='yearRow'>
-                  <label className='yearLabel'>Hasta</label>
-                  <select
-                    className='yearSelect'
-                    value={yearTo}
-                    onChange={e => setYearTo(e.target.value)}
-                  >
-                    <option value=''>—</option>
-                    {years.map(y => <option key={y} value={y}>{y}</option>)}
-                  </select>
-                </div>
-                {(yearFrom || yearTo) && (
-                  <button className='yearReset' onClick={() => { setYearFrom(''); setYearTo('') }}>
-                    Limpiar
-                  </button>
-                )}
+      {currentFeatured && !isFiltering && (
+        <section
+          className='hero'
+          onMouseEnter={() => setHeroPaused(true)}
+          onMouseLeave={() => setHeroPaused(false)}
+        >
+          <div className='heroBg' style={{ backgroundImage: `url(${currentFeatured.posterUrl})` }} />
+          <div className='heroGradient' />
+          <div className='heroContent'>
+            <div className='heroText' key={currentFeatured.id}>
+              {currentFeatured.genres?.[0] && (
+                <span className='heroEyebrow'>{currentFeatured.genres[0].name}</span>
+              )}
+              <h1 className='heroTitle'>{currentFeatured.title}</h1>
+              {currentFeatured.plot && <p className='heroPlot'>{currentFeatured.plot}</p>}
+              <div className='heroMeta'>
+                {currentFeatured.year     && <span>{currentFeatured.year}</span>}
+                {currentFeatured.runtime  && <span>{currentFeatured.runtime} min</span>}
+                {currentFeatured.director && <span>{currentFeatured.director}</span>}
               </div>
+              <button className='heroBtn' onClick={() => openModal(currentFeatured)}>
+                ▶&nbsp; Ver detalles
+              </button>
             </div>
+            <img
+              className='heroPoster'
+              src={currentFeatured.posterUrl}
+              alt={currentFeatured.title}
+            />
           </div>
 
-          <div className='sidebarDivider' />
-
-          {/* ── Géneros ── */}
-          <div className='sidebarSection'>
-            <button className='sidebarSectionHeader' onClick={() => setGenresOpen(o => !o)}>
-              <span className='sidebarLabel'>Géneros</span>
-              <span className={`sidebarArrow ${genresOpen ? 'open' : ''}`}>▾</span>
-            </button>
-            <div className={`sidebarCollapsible genresCollapsible ${genresOpen ? 'open' : ''}`}>
-              <ul className='genreList'>
-                <li
-                  className={`genreItem ${!selectedGenre ? 'active' : ''}`}
-                  onClick={() => setSelectedGenre(null)}
-                >
-                  <span className='genreDot' />
-                  Todos
-                </li>
-                {genres.map(genre => (
-                  <li
-                    key={genre}
-                    className={`genreItem ${selectedGenre === genre ? 'active' : ''}`}
-                    onClick={() => setSelectedGenre(genre)}
-                  >
-                    <span className='genreDot' />
-                    {GENRE_ES[genre] || genre}
-                  </li>
-                ))}
-              </ul>
+          {featuredMovies.length > 1 && (
+            <div className='heroDots'>
+              {featuredMovies.map((_, i) => (
+                <button
+                  key={i}
+                  className={`heroDot ${i === heroIndex ? 'heroDotActive' : ''}`}
+                  onClick={() => setHeroIndex(i)}
+                />
+              ))}
             </div>
-          </div>
+          )}
+        </section>
+      )}
 
-        </aside>
-
-        <div className='catalogueMain'>
+      <div className='controls'>
+        <div className='controlsTop'>
           <div className='searchBar'>
             <span className='searchIcon'>🔍</span>
             <input
@@ -189,46 +185,61 @@ const Movies = () => {
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            {search && (
-              <button className='searchClear' onClick={() => setSearch('')}>✕</button>
-            )}
+            {search && <button className='searchClear' onClick={() => setSearch('')}>✕</button>}
           </div>
-
-          {filteredMovies.length === 0 ? (
-            <p className='noResults'>No se encontraron películas.</p>
-          ) : (
-            <div className='moviesGrid'>
-              {filteredMovies.map(movie => (
-                <div
-                  key={movie.id}
-                  className='movieCard'
-                  onClick={() => openModal(movie)}
-                >
-                  <div className='movieImageWrapper'>
-                    <img
-                      src={movie.posterUrl}
-                      alt={movie.title}
-                      className='movieImage'
-                      onError={e => { e.target.src = 'https://via.placeholder.com/150x225.png?text=Sin+imagen' }}
-                    />
-                    <div className='movieOverlay'>
-                      <span>Ver detalles</span>
-                    </div>
-                  </div>
-                  <p className='movieTitle'>{movie.title}</p>
-                </div>
-              ))}
-            </div>
+          <select className='yearPill' value={yearFrom} onChange={e => setYearFrom(e.target.value)}>
+            <option value=''>Desde</option>
+            {years.map(y => <option key={y} value={y}>{y}</option>)}
+          </select>
+          <select className='yearPill' value={yearTo} onChange={e => setYearTo(e.target.value)}>
+            <option value=''>Hasta</option>
+            {years.map(y => <option key={y} value={y}>{y}</option>)}
+          </select>
+          {(yearFrom || yearTo) && (
+            <button className='clearFiltersBtn' onClick={() => { setYearFrom(''); setYearTo('') }}>✕</button>
           )}
+        </div>
+
+        <div className='genreChips'>
+          <button
+            className={`chip ${!selectedGenreId ? 'active' : ''}`}
+            onClick={() => setSelectedGenreId(null)}
+          >Todos</button>
+          {state.genres.map(genre => (
+            <button
+              key={genre.id}
+              className={`chip ${selectedGenreId === genre.id ? 'active' : ''}`}
+              onClick={() => setSelectedGenreId(genre.id)}
+            >{genre.name}</button>
+          ))}
         </div>
       </div>
 
+      {isFiltering ? (
+        filteredMovies.length === 0
+          ? <p className='noResults'>No se encontraron películas.</p>
+          : (
+            <div className='moviesGrid'>
+              {filteredMovies.map(movie => (
+                <MovieCard key={movie.id} movie={movie} onClick={() => openModal(movie)} />
+              ))}
+            </div>
+          )
+      ) : (
+        <div className='genreRows'>
+          {moviesByGenre.map(({ genre, movies }) => (
+            <GenreRow
+              key={genre.id}
+              genre={genre}
+              movies={movies}
+              openModal={openModal}
+            />
+          ))}
+        </div>
+      )}
+
       {state.modalOpen && state.selectedMovie && (
-        <Modal
-          movie={state.selectedMovie}
-          onClose={closeModal}
-          onRent={rentMovie}
-        />
+        <Modal movie={state.selectedMovie} onClose={closeModal} onRent={rentMovie} />
       )}
     </div>
   )

@@ -1,0 +1,429 @@
+/* ─── Layout ──────────────────────────────────────────── */
+.adminContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 1.5rem 3rem;
+}
+
+.adminTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e11d48;
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Tabs ────────────────────────────────────────────── */
+.adminTabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.adminTab {
+  padding: 0.65rem 1.4rem;
+  border: none;
+  background: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #6b7280;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s;
+  font-family: inherit;
+}
+
+.adminTab:hover { color: #374151; }
+
+.adminTab.active {
+  color: #e11d48;
+  border-bottom-color: #e11d48;
+  font-weight: 600;
+}
+
+.adminSection { margin-top: 0; }
+
+/* ─── Card system (shared across all sections) ─────────── */
+.adminCardList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.adminCard {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  align-items: flex-start;
+  transition: border-color 0.15s;
+}
+
+.adminCard:hover { border-color: #d1d5db; }
+
+.adminCardInactive { opacity: 0.45; }
+
+/* ── Poster (movies) ── */
+.adminCardPosterWrap { flex-shrink: 0; width: 72px; }
+
+.adminCardPoster {
+  width: 72px;
+  height: 108px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+.adminCardNoPoster {
+  width: 72px;
+  height: 108px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: #9ca3af;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+/* ── Avatar (users) ── */
+.adminCardAvatar {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  align-self: center;
+}
+
+.adminCardAvatar.adminRole { background: #fef3c7; color: #92400e; }
+.adminCardAvatar.suspended { background: #f3f4f6; color: #9ca3af; }
+
+/* ── Body ── */
+.adminCardBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.adminCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 2px;
+}
+
+.adminCardTitle {
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.adminCardBadges {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.adminCardMeta {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.adminCardSub {
+  font-size: 0.82rem;
+  color: #374151;
+  margin: 0;
+}
+
+.adminCardNote {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-style: italic;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.adminCardDesc {
+  font-size: 0.83rem;
+  color: #374151;
+  line-height: 1.45;
+  margin: 2px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.adminCardGenres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.adminCardPrice {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #374151;
+  flex-shrink: 0;
+  align-self: center;
+  white-space: nowrap;
+}
+
+/* ── Actions ── */
+.adminCardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  align-self: flex-start;
+  padding-top: 2px;
+}
+
+.adminCardActions.row {
+  flex-direction: row;
+  align-items: center;
+  align-self: center;
+}
+
+/* ─── Badges ──────────────────────────────────────────── */
+.roleBadge       { padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+.roleBadge.ADMIN { background: #fef3c7; color: #92400e; }
+.roleBadge.USER  { background: #dbeafe; color: #1e40af; }
+
+.activeBadge      { padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+.activeBadge.on   { background: #dcfce7; color: #166534; }
+.activeBadge.off  { background: #f3f4f6; color: #6b7280; }
+
+.featuredBadge    { padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+.featuredBadge.on { background: #fef3c7; color: #b45309; }
+
+.genreBadge { background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 500; }
+
+/* ─── Buttons ─────────────────────────────────────────── */
+.editBtn       { padding: 0.3rem 0.8rem; background: #f1f5f9; color: #374151; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-family: inherit; white-space: nowrap; }
+.editBtn:hover { background: #e2e8f0; }
+
+.deleteBtn       { padding: 0.3rem 0.8rem; background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-family: inherit; white-space: nowrap; }
+.deleteBtn:hover { background: #ffe4e6; }
+
+.submitBtn       { padding: 0.5rem 1.2rem; background: #e11d48; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-family: inherit; }
+.submitBtn:hover { background: #be123c; }
+
+.cancelBtn       { padding: 0.5rem 1.2rem; background: #6b7280; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-family: inherit; }
+.cancelBtn:hover { background: #4b5563; }
+
+.toggleBtn            { padding: 0.3rem 0.8rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-family: inherit; white-space: nowrap; }
+.toggleBtn.deactivate { background: #fef3c7; color: #92400e; }
+.toggleBtn.deactivate:hover { background: #fde68a; }
+.toggleBtn.activate   { background: #dcfce7; color: #166534; }
+.toggleBtn.activate:hover   { background: #bbf7d0; }
+
+.featuredBtn            { padding: 0.3rem 0.8rem; border: 1px solid #d1d5db; background: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; color: #9ca3af; white-space: nowrap; transition: border-color 0.15s, color 0.15s, background 0.15s; font-family: inherit; }
+.featuredBtn:hover      { border-color: #f59e0b; color: #f59e0b; }
+.featuredBtn.featuredOn { border-color: #f59e0b; color: #b45309; background: #fef3c7; }
+.featuredBtn.featuredOn:hover { background: #fde68a; }
+
+/* ─── Forms ───────────────────────────────────────────── */
+.movieForm {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+}
+
+.movieForm h2 { margin-bottom: 1rem; font-size: 1rem; font-weight: 600; color: #111827; }
+
+.movieFormRow { display: flex; gap: 0.8rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+
+.adminInput {
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+
+.adminInput:focus { outline: none; border-color: #e11d48; }
+
+.adminTextarea { min-height: 80px; resize: vertical; margin-bottom: 0.8rem; }
+
+.movieFormActions { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 0.5rem; }
+
+.fieldGroup       { display: flex; flex-direction: column; gap: 0.3rem; width: 100%; margin-bottom: 0.8rem; }
+.fieldGroup label { font-size: 0.82rem; font-weight: 500; color: #374151; }
+.fieldSmall       { max-width: 140px; }
+
+.movieMsg         { font-size: 0.88rem; margin-bottom: 0.5rem; }
+.movieMsg.success { color: #16a34a; }
+.movieMsg.error   { color: #dc2626; }
+.adminError       { color: #dc2626; margin-bottom: 1rem; font-size: 0.9rem; }
+.emptyMsg         { color: #6b7280; font-size: 0.9rem; padding: 1.5rem 0; }
+
+/* ─── Edit movie modal ────────────────────────────────── */
+.editMovieModal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.modalCloseBtn:hover { background: #f3f4f6; color: #111827; }
+
+.editMovieTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+  color: #111827;
+}
+
+.editModalActions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+}
+
+.editModalStatusBtns { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.editModalMainBtns   { display: flex; gap: 0.4rem; }
+
+/* ─── Modals (users / suspend) ───────────────────────── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1rem;
+}
+
+.suspendModal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.suspendModal h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+.suspendModal p  { margin: 0; font-size: 0.88rem; color: #374151; }
+.suspendLabel    { font-size: 0.82rem; font-weight: 500; color: #374151; }
+
+/* ─── Responsive ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  .adminContainer { padding: 80px 1rem 2rem; }
+
+  .adminTitle { font-size: 1.2rem; }
+
+  /* Tabs scroll horizontal */
+  .adminTabs { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .adminTabs::-webkit-scrollbar { display: none; }
+  .adminTab { padding: 0.6rem 1rem; font-size: 0.82rem; white-space: nowrap; }
+
+  /* Form rows stack */
+  .movieFormRow { flex-direction: column; gap: 0; }
+  .fieldSmall { max-width: none; }
+
+  /* Movie form */
+  .movieForm { padding: 1rem; }
+
+  /* Edit modal full width */
+  .editMovieModal { padding: 1.2rem 1rem; max-height: 95vh; }
+  .editMovieTitle { font-size: 0.95rem; }
+  .editModalActions { flex-direction: column; gap: 0.75rem; }
+  .editModalStatusBtns { justify-content: flex-start; }
+  .editModalMainBtns { justify-content: flex-end; }
+
+  /* User/suspend modals */
+  .suspendModal { padding: 1.2rem; }
+  .movieFormActions { flex-wrap: wrap; }
+
+  /* Cards */
+  .adminCard { gap: 0.75rem; padding: 0.85rem; }
+  .adminCardPosterWrap { width: 56px; }
+  .adminCardPoster { width: 56px; height: 84px; }
+  .adminCardNoPoster { width: 56px; height: 84px; }
+  .adminCardTitle { font-size: 0.85rem; }
+  .adminCardActions { flex-direction: row; align-self: flex-start; flex-wrap: wrap; }
+
+  /* Genre cards: hide price inline, show in actions */
+  .adminCardPrice { font-size: 0.82rem; }
+}
+
+@media (max-width: 480px) {
+  .adminContainer { padding: 76px 0.75rem 2rem; }
+
+  /* Movie cards: poster top or hide on very small */
+  .adminCard { flex-wrap: wrap; }
+  .adminCardPosterWrap { width: 52px; }
+  .adminCardPoster { width: 52px; height: 78px; }
+  .adminCardNoPoster { width: 52px; height: 78px; }
+
+  /* Tabs */
+  .adminTab { padding: 0.55rem 0.8rem; font-size: 0.78rem; }
+
+  /* Buttons smaller */
+  .editBtn, .deleteBtn, .toggleBtn, .featuredBtn { font-size: 0.75rem; padding: 0.25rem 0.6rem; }
+  .submitBtn, .cancelBtn { padding: 0.4rem 0.9rem; font-size: 0.85rem; }
+}

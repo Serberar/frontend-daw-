@@ -1,10 +1,10 @@
-import React, { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
 import axios from 'axios'
-import { movies } from '../data/movies'
+import { fetchMovies, adaptMovie } from '../services/movieService'
 
 export const myContext = createContext()
 
-const API = process.env.REACT_APP_API_URL
+const API = process.env.REACT_APP_BACK_URL
 
 axios.interceptors.response.use(
   res => res,
@@ -18,85 +18,62 @@ axios.interceptors.response.use(
   }
 )
 
-export function MyProvider ({ children }) {
-  const savedCart = JSON.parse(localStorage.getItem('cart')) || []
-  const initialSubtotal = savedCart.reduce((acc, item) => acc + item.total, 0)
-
-  const [state, setState] = useState({
-    movies,
-    items: savedCart,
-    subtotal: initialSubtotal,
-    modalOpen: false,
-    selectedMovie: null,
-    userData: JSON.parse(localStorage.getItem('userData')) || null,
-    userDetails: JSON.parse(localStorage.getItem('userData')) || {},
-    rentals: []
+export function MyProvider({ children }) {
+  const [state, setState] = useState(() => {
+    const items = JSON.parse(localStorage.getItem('cart')) || []
+    return {
+      movies: [],
+      genres: [],
+      featuredMovies: [],
+      items,
+      modalOpen: false,
+      selectedMovie: null,
+      userData: JSON.parse(localStorage.getItem('userData')) || null,
+      userDetails: JSON.parse(localStorage.getItem('userData')) || {},
+      rentals: []
+    }
   })
 
-  // ── helpers ────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    fetchMovies().then(movies => setState(prev => ({ ...prev, movies })))
+    axios.get(`${API}/api/genre`).then(({ data }) => setState(prev => ({ ...prev, genres: data })))
+    axios.get(`${API}/api/movie/featured`)
+      .then(({ data }) => setState(prev => ({ ...prev, featuredMovies: data.map(adaptMovie) })))
+      .catch(() => {})
+  }, [])
+
   const getToken = () => localStorage.getItem('token')
   const authHeader = () => ({ Authorization: `Bearer ${getToken()}` })
 
-  // ── Movies / cart ──────────────────────────────────────────────────────────
+  const openModal = (movie) => setState(prev => ({ ...prev, modalOpen: true, selectedMovie: movie }))
+  const closeModal = () => setState(prev => ({ ...prev, modalOpen: false, selectedMovie: null }))
 
-  const openModal = (movie) => {
-    setState(prev => ({ ...prev, modalOpen: true, selectedMovie: movie }))
-  }
-
-  const closeModal = () => {
-    setState(prev => ({ ...prev, modalOpen: false, selectedMovie: null }))
-  }
-
-  const rentMovie = (movie, days) => {
-    const pricePerDay = 2
-    const newItem = {
-      id: movie.id,
-      title: movie.title,
-      posterUrl: movie.posterUrl,
-      days,
-      pricePerDay,
-      total: days * pricePerDay
-    }
-
+  const rentMovie = (movie, days, pricePerDay = 2) => {
+    const newItem = { id: movie.id, title: movie.title, posterUrl: movie.posterUrl, days, pricePerDay, total: days * pricePerDay }
     const existing = state.items.find(item => item.id === movie.id)
     const newItems = existing
-      ? state.items.map(item => item.id === movie.id ? { ...item, days, total: days * pricePerDay } : item)
+      ? state.items.map(item => item.id === movie.id ? { ...item, days, pricePerDay, total: days * pricePerDay } : item)
       : [...state.items, newItem]
-
-    const newSubtotal = newItems.reduce((acc, item) => acc + item.total, 0)
     localStorage.setItem('cart', JSON.stringify(newItems))
-
-    setState(prev => ({
-      ...prev,
-      items: newItems,
-      subtotal: newSubtotal,
-      modalOpen: false,
-      selectedMovie: null
-    }))
+    setState(prev => ({ ...prev, items: newItems, modalOpen: false, selectedMovie: null }))
   }
 
   const removeFromCart = (id) => {
     const newItems = state.items.filter(item => item.id !== id)
-    const newSubtotal = newItems.reduce((acc, item) => acc + item.total, 0)
     localStorage.setItem('cart', JSON.stringify(newItems))
-    setState(prev => ({ ...prev, items: newItems, subtotal: newSubtotal }))
+    setState(prev => ({ ...prev, items: newItems }))
   }
 
   const confirmRental = async () => {
     await Promise.all(
       state.items.map(item =>
-        axios.post(
-          `${API}/api/product/rent`,
-          { movieId: item.id, movieTitle: item.title, dias: item.days },
-          { headers: authHeader() }
-        )
+        axios.post(`${API}/api/product/rent`, { movieId: item.id, movieTitle: item.title, dias: item.days }, { headers: authHeader() })
       )
     )
     localStorage.removeItem('cart')
-    setState(prev => ({ ...prev, items: [], subtotal: 0 }))
+    setState(prev => ({ ...prev, items: [] }))
+    await fetchRentals()
   }
-
-  // ── Auth ───────────────────────────────────────────────────────────────────
 
   const register = async (userData) => {
     await axios.post(`${API}/api/user/register`, userData)
@@ -105,11 +82,10 @@ export function MyProvider ({ children }) {
   const login = async (email, password) => {
     const { data } = await axios.post(`${API}/api/user/login`, { email, password })
     localStorage.setItem('token', data.token)
-
     const meRes = await axios.get(`${API}/api/user/me`, { headers: { Authorization: `Bearer ${data.token}` } })
     localStorage.setItem('userData', JSON.stringify(meRes.data))
-
     setState(prev => ({ ...prev, userData: meRes.data, userDetails: meRes.data }))
+    return meRes.data
   }
 
   const logout = () => {
@@ -123,6 +99,19 @@ export function MyProvider ({ children }) {
     setState(prev => ({ ...prev, userDetails: data }))
   }
 
+  const changePassword = async (currentPassword, newPassword) => {
+    await axios.patch(`${API}/api/user/me/password`, { currentPassword, newPassword }, { headers: authHeader() })
+  }
+
+  const saveCard = async (cardNumber) => {
+    await axios.patch(`${API}/api/user/me/card`, { cardNumber }, { headers: authHeader() })
+    setState(prev => ({
+      ...prev,
+      userDetails: { ...prev.userDetails, cardLast4: cardNumber.slice(-4) },
+      userData: { ...prev.userData, cardLast4: cardNumber.slice(-4) },
+    }))
+  }
+
   const saveUserData = async (formData) => {
     const { data } = await axios.patch(
       `${API}/api/user/me`,
@@ -134,7 +123,77 @@ export function MyProvider ({ children }) {
     setState(prev => ({ ...prev, userDetails: updated, userData: updated }))
   }
 
-  // ── Rentals ────────────────────────────────────────────────────────────────
+  const fetchUsers = async () => {
+    const { data } = await axios.get(`${API}/api/admin/lista-de-usuarios`, { headers: authHeader() })
+    return data.users
+  }
+
+  const fetchUserDetail = async (userId) => {
+    const { data } = await axios.get(`${API}/api/admin/${userId}`, { headers: authHeader() })
+    return data
+  }
+
+  const resetUserPassword = async (userId, newPassword) => {
+    await axios.patch(`${API}/api/admin/${userId}/password`, { newPassword }, { headers: authHeader() })
+  }
+
+  const updateUserAdmin = async (userId, userData) => {
+    const { data } = await axios.put(`${API}/api/admin/${userId}`, userData, { headers: authHeader() })
+    return data
+  }
+
+  const suspendUser = async (userId, note) => {
+    const { data } = await axios.patch(`${API}/api/admin/${userId}/suspend`, { note }, { headers: authHeader() })
+    return data
+  }
+
+  const fetchAllRentals = async () => {
+    const { data } = await axios.get(`${API}/api/admin/alquileres`, { headers: authHeader() })
+    return data
+  }
+
+  const createMovie = async (movieData) => {
+    const { data } = await axios.post(`${API}/api/movie/create-a-new-movie`, movieData, { headers: authHeader() })
+    return data
+  }
+
+  const updateMovie = async (id, movieData) => {
+    const { data } = await axios.put(`${API}/api/movie/${id}`, movieData, { headers: authHeader() })
+    return data
+  }
+
+  const createGenre = async (name, price) => {
+    const { data } = await axios.post(`${API}/api/genre`, { name, price }, { headers: authHeader() })
+    setState(prev => ({ ...prev, genres: [...prev.genres, data].sort((a, b) => a.name.localeCompare(b.name)) }))
+    return data
+  }
+
+  const updateGenre = async (id, name, price) => {
+    const { data } = await axios.put(`${API}/api/genre/${id}`, { name, price }, { headers: authHeader() })
+    setState(prev => ({ ...prev, genres: prev.genres.map(g => g.id === id ? data : g) }))
+    return data
+  }
+
+  const deleteGenre = async (id) => {
+    await axios.delete(`${API}/api/genre/${id}`, { headers: authHeader() })
+    setState(prev => ({ ...prev, genres: prev.genres.filter(g => g.id !== id) }))
+  }
+
+  const refreshMoviesAdmin = async () => {
+    const { data } = await axios.get(`${API}/api/admin/all-movies`, { headers: authHeader() })
+    return data.map(adaptMovie)
+  }
+
+  const toggleMovie = async (id) => {
+    const { data } = await axios.patch(`${API}/api/movie/${id}/toggle`, {}, { headers: authHeader() })
+    return data
+  }
+
+  const toggleFeaturedMovie = async (id) => {
+    await axios.patch(`${API}/api/movie/${id}/toggle-featured`, {}, { headers: authHeader() })
+    const { data } = await axios.get(`${API}/api/movie/featured`).catch(() => ({ data: [] }))
+    setState(prev => ({ ...prev, featuredMovies: data.map(adaptMovie) }))
+  }
 
   const fetchRentals = async () => {
     const { data } = await axios.get(`${API}/api/product/history`, { headers: authHeader() })
@@ -143,12 +202,7 @@ export function MyProvider ({ children }) {
 
   const returnMovie = async (rentalId) => {
     await axios.patch(`${API}/api/product/${rentalId}/return`, {}, { headers: authHeader() })
-    setState(prev => ({
-      ...prev,
-      rentals: prev.rentals.map(r =>
-        r.id === rentalId ? { ...r, returnedAt: new Date().toISOString() } : r
-      )
-    }))
+    await fetchRentals()
   }
 
   return (
@@ -157,10 +211,13 @@ export function MyProvider ({ children }) {
       openModal, closeModal,
       rentMovie, removeFromCart, confirmRental,
       register, login, logout,
-      fetchUserData, saveUserData,
-      fetchRentals, returnMovie
-    }}
-    >
+      fetchUserData, saveUserData, saveCard, changePassword,
+      fetchRentals, returnMovie,
+      fetchUsers, fetchUserDetail, updateUserAdmin, suspendUser, fetchAllRentals,
+      resetUserPassword,
+      createMovie, updateMovie, refreshMoviesAdmin, toggleMovie, toggleFeaturedMovie,
+      createGenre, updateGenre, deleteGenre
+    }}>
       {children}
     </myContext.Provider>
   )

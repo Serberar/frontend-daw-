@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { myContext } from '../Context'
 import './Nav.css'
@@ -19,7 +19,7 @@ const Nav = () => {
   return (
     <nav className='nav'>
       <div className='navLogo'>
-        <Link to='/'>🎬 CineRent</Link>
+        <Link to='/'>🎬 Cine<span>Rent</span></Link>
       </div>
 
       <button
@@ -33,19 +33,28 @@ const Nav = () => {
       </button>
 
       <ul className={`navLinks ${menuOpen ? 'open' : ''}`}>
-        <li>
-          <Link to='/' onClick={() => setMenuOpen(false)}>Catálogo</Link>
-        </li>
-        <li>
-          <Link to='/carrito' className='cartLink' onClick={() => setMenuOpen(false)}>
-            🛒 Carrito
-            {totalItems > 0 && <span className='badge'>{totalItems}</span>}
-          </Link>
-        </li>
+        {state.userData?.role !== 'ADMIN' && (
+          <li>
+            <Link to='/' onClick={() => setMenuOpen(false)}>Catálogo</Link>
+          </li>
+        )}
+        {state.userData?.role !== 'ADMIN' && (
+          <li>
+            <Link to='/carrito' className='cartLink' onClick={() => setMenuOpen(false)}>
+              🛒 Carrito
+              {totalItems > 0 && <span className='badge'>{totalItems}</span>}
+            </Link>
+          </li>
+        )}
 
         {state.userData
           ? (
             <>
+              {state.userData.role === 'ADMIN' && (
+                <li>
+                  <Link to='/admin' onClick={() => setMenuOpen(false)}>Admin</Link>
+                </li>
+              )}
               <li>
                 <Link to='/cliente' onClick={() => setMenuOpen(false)}>
                   👤 {state.userData.firstName}

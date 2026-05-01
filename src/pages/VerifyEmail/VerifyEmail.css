@@ -1,0 +1,45 @@
+.verifyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.verifyBox {
+  text-align: center;
+  padding: 2.5rem;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 100%;
+}
+
+.verifyBox.success { background: #f0fdf4; border: 1px solid #86efac; }
+.verifyBox.error   { background: #fef2f2; border: 1px solid #fca5a5; }
+
+.verifyIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.verifyBox.success .verifyIcon { color: #16a34a; }
+.verifyBox.error   .verifyIcon { color: #dc2626; }
+
+.verifyBox h2 { margin-bottom: 0.5rem; }
+.verifyBox p  { color: #555; margin-bottom: 1.5rem; }
+
+.verifyBtn {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  background: #1d4ed8;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.verifyBtn:hover { background: #1e40af; }
+
+.verifyMessage {
+  color: #555;
+  font-size: 1.1rem;
+}

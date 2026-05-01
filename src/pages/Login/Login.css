@@ -3,16 +3,17 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding-top: 65px;
+  padding: 80px 16px 40px;
 }
 
 .loginForm {
-  background-color: #16213e;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-solid);
   padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  border-radius: var(--radius-l);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
   width: 400px;
-  max-width: 90vw;
+  max-width: 92vw;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -20,8 +21,10 @@
 
 .loginForm h1 {
   text-align: center;
-  font-size: 24px;
-  color: #e94560;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.4px;
   margin-bottom: 4px;
 }
 
@@ -32,54 +35,71 @@
 }
 
 .loginField label {
-  font-size: 14px;
-  color: #aaa;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub);
 }
 
 .loginInput {
-  padding: 10px 14px;
-  border: 1px solid #2a2a4a;
-  border-radius: 6px;
-  background-color: #1a1a2e;
-  color: #e0e0e0;
-  font-size: 15px;
+  padding: 11px 14px;
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-s);
+  background: var(--bg-surface);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
 }
 
 .loginInput:focus {
-  border-color: #e94560;
+  border-color: rgba(255, 45, 85, 0.5);
+  box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
+.loginInput::placeholder { color: var(--text-muted); }
+
 .loginError {
-  color: #e94560;
-  font-size: 14px;
+  color: var(--accent);
+  font-size: 13px;
   text-align: center;
 }
 
 .loginBtn {
   width: 100%;
   padding: 12px;
-  background-color: #e94560;
+  background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: var(--radius-m);
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
-  letter-spacing: 0.5px;
+  font-family: inherit;
+  letter-spacing: 0.3px;
   margin-top: 4px;
+  transition: background 0.15s var(--ease), box-shadow 0.15s var(--ease), transform 0.15s var(--ease);
 }
 
 .loginBtn:hover {
-  background-color: #c73652;
+  background: var(--accent-hover);
+  box-shadow: 0 6px 20px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.loginBtn:active { transform: translateY(0); }
+
+.loginBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .loginNotVerified {
-  background-color: #2a1e00;
-  border: 1px solid #c47e00;
-  border-radius: 8px;
+  background: rgba(240, 165, 0, 0.08);
+  border: 1px solid rgba(240, 165, 0, 0.3);
+  border-radius: var(--radius-s);
   padding: 12px 16px;
   color: #f0a500;
   font-size: 13px;
@@ -92,24 +112,25 @@
   font-size: 14px;
 }
 
-.loginNotVerified p {
-  margin: 0;
-  color: #c99a30;
-}
+.loginNotVerified p { margin: 0; color: #c99a30; }
 
 .loginRegisterLink {
   text-align: center;
   font-size: 13px;
-  color: #aaa;
+  color: var(--text-muted);
   margin-top: -4px;
 }
 
 .loginRegisterLink a {
-  color: #e94560;
+  color: var(--accent);
   text-decoration: none;
   font-weight: 600;
 }
 
-.loginRegisterLink a:hover {
-  text-decoration: underline;
+.loginRegisterLink a:hover { text-decoration: underline; }
+
+@media (max-width: 480px) {
+  .loginContainer { align-items: flex-start; padding-top: 90px; }
+  .loginForm { padding: 28px 20px; gap: 16px; }
+  .loginForm h1 { font-size: 20px; }
 }

@@ -7,36 +7,43 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
-  height: 65px;
-  background-color: #0f0f1a;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  padding: 0 40px;
+  height: 64px;
+  background: rgba(12, 12, 12, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
 }
 
 .navLogo a {
   text-decoration: none;
-  color: #e94560;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  color: var(--text);
+}
+
+.navLogo a span {
+  color: var(--accent);
 }
 
 .navLinks {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: 4px;
   align-items: center;
 }
 
 .navLinks li a {
   text-decoration: none;
-  color: #e0e0e0;
-  font-size: 16px;
-  transition: color 0.2s;
+  color: var(--text-sub);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.15s var(--ease);
 }
 
 .navLinks li a:hover {
-  color: #e94560;
+  color: var(--text);
 }
 
 .cartLink {
@@ -44,15 +51,22 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-s);
+  transition: background 0.15s var(--ease);
+}
+
+.cartLink:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .badge {
-  background-color: #e94560;
+  background: var(--accent);
   color: #fff;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 12px;
+  border-radius: var(--radius-pill);
+  width: 17px;
+  height: 17px;
+  font-size: 10px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -71,80 +85,104 @@
 
 .hamburger span {
   display: block;
-  width: 25px;
-  height: 3px;
-  background-color: #e0e0e0;
-  border-radius: 2px;
-  transition: background-color 0.2s;
+  width: 22px;
+  height: 2px;
+  background: var(--text-sub);
+  border-radius: var(--radius-pill);
+  transition: background 0.15s var(--ease);
 }
 
 .hamburger:hover span {
-  background-color: #e94560;
+  background: var(--text);
 }
 
+/* ── Auth buttons ── */
 .navRegisterLink {
-  color: #aaa !important;
-  font-weight: 600;
-  border: 1px solid #555;
-  padding: 6px 14px;
-  border-radius: 6px;
-  transition: border-color 0.2s, color 0.2s !important;
+  color: var(--text-sub) !important;
+  font-weight: 500 !important;
+  border: 1px solid var(--border-solid) !important;
+  padding: 7px 16px !important;
+  border-radius: var(--radius-pill) !important;
+  font-size: 13px !important;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease), background 0.15s var(--ease) !important;
 }
 
 .navRegisterLink:hover {
-  border-color: #e94560;
-  color: #e94560 !important;
+  border-color: var(--text-sub) !important;
+  color: var(--text) !important;
 }
 
 .navLoginLink {
-  color: #e94560 !important;
-  font-weight: 600;
-  border: 1px solid #e94560;
-  padding: 6px 14px;
-  border-radius: 6px;
-  transition: background-color 0.2s, color 0.2s !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  background: var(--accent) !important;
+  padding: 7px 18px !important;
+  border-radius: var(--radius-pill) !important;
+  font-size: 13px !important;
+  border: none !important;
+  transition: background 0.15s var(--ease), box-shadow 0.15s var(--ease), transform 0.15s var(--ease) !important;
 }
 
 .navLoginLink:hover {
-  background-color: #e94560;
+  background: var(--accent-hover) !important;
+  box-shadow: 0 4px 16px var(--accent-glow) !important;
+  transform: translateY(-1px) !important;
   color: #fff !important;
 }
 
 .navLogoutBtn {
   background: none;
-  border: 1px solid #555;
-  color: #aaa;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 14px;
+  border: 1px solid var(--border-solid);
+  color: var(--text-sub);
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease);
 }
 
 .navLogoutBtn:hover {
-  border-color: #e94560;
-  color: #e94560;
+  border-color: var(--text-sub);
+  color: var(--text);
 }
 
 @media (max-width: 600px) {
-  .hamburger {
-    display: flex;
-  }
+  .nav { padding: 0 20px; }
+
+  .hamburger { display: flex; }
 
   .navLinks {
     display: none;
     position: absolute;
-    top: 65px;
+    top: 64px;
     left: 0;
     right: 0;
-    background-color: #0f0f1a;
+    background: rgba(12, 12, 12, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
-    padding: 20px;
-    gap: 20px;
-    border-top: 1px solid #2a2a4a;
+    padding: 12px;
+    gap: 4px;
+    border-top: 1px solid var(--border);
   }
 
-  .navLinks.open {
-    display: flex;
+  .navLinks.open { display: flex; }
+
+  .navLinks li { width: 100%; }
+
+  .navLinks li a {
+    display: block;
+    padding: 10px 14px;
+    border-radius: var(--radius-s);
+    width: 100%;
   }
+
+  .navLinks li a:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .navRegisterLink { display: block !important; text-align: center !important; }
+  .navLoginLink    { display: block !important; text-align: center !important; }
+  .navLogoutBtn    { width: 100%; }
 }

@@ -1,10 +1,7 @@
 .accountContainer {
   max-width: 700px;
-  margin: 90px auto 40px;
-  padding: 40px;
-  background-color: #16213e;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  margin: 0 auto;
+  padding: 88px 24px 56px;
 }
 
 .accountHeader {
@@ -15,33 +12,37 @@
 }
 
 .accountHeader h1 {
-  font-size: 24px;
-  color: #e94560;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.4px;
 }
 
 .welcome {
-  color: #aaa;
-  font-size: 15px;
-  margin-bottom: 24px;
+  color: var(--text-sub);
+  font-size: 14px;
+  margin-bottom: 28px;
 }
 
-.welcome strong {
-  color: #e0e0e0;
-}
+.welcome strong { color: var(--text); }
 
-/* ── Personal data section ── */
+/* ── Sections ── */
 .personalDataContainer {
-  background-color: #1a1a2e;
-  border-radius: 8px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-m);
   padding: 24px;
-  border: 1px solid #2a2a4a;
+  border: 1px solid var(--border-solid);
 }
 
 .personalDataContainer h2 {
-  font-size: 17px;
-  color: #e0e0e0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
   margin-bottom: 20px;
+  letter-spacing: -0.2px;
 }
+
+.cardSection { margin-top: 16px; }
 
 /* ── Editable field ── */
 .editableField {
@@ -53,134 +54,234 @@
 }
 
 .editableField label {
-  font-size: 14px;
-  color: #aaa;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub);
   flex: 0 0 120px;
 }
 
 .editableField span {
-  color: #e0e0e0;
+  color: var(--text);
   font-size: 14px;
   flex: 1;
 }
 
 .editableField input {
   flex: 1;
-  padding: 8px 12px;
-  background-color: #16213e;
-  border: 1px solid #e94560;
-  border-radius: 6px;
-  color: #e0e0e0;
+  padding: 9px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-s);
+  color: var(--text);
   font-size: 14px;
+  font-family: inherit;
   outline: none;
+  box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
-.readonlyField {
-  opacity: 0.6;
-}
+.readonlyField { opacity: 0.45; }
 
 /* ── Buttons ── */
 .editBtn {
-  background-color: transparent;
-  color: #e94560;
-  border: 1px solid #e94560;
-  border-radius: 5px;
-  padding: 5px 10px;
+  background: none;
+  color: var(--text-sub);
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-s);
+  padding: 5px 12px;
   font-size: 12px;
+  font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease);
 }
 
 .editBtn:hover {
-  background-color: #e94560;
-  color: #fff;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .saveBtn {
-  background-color: #2a9d5c;
+  background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 5px;
-  padding: 6px 12px;
+  border-radius: var(--radius-s);
+  padding: 6px 14px;
   font-size: 12px;
+  font-family: inherit;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background 0.15s var(--ease);
 }
 
-.saveBtn:hover {
-  background-color: #1e7a45;
-}
+.saveBtn:hover { background: var(--accent-hover); }
 
 .cancelBtn {
-  background-color: #555;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 12px;
+  background: none;
+  color: var(--text-sub);
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-s);
+  padding: 6px 14px;
   font-size: 12px;
+  font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease);
 }
 
 .cancelBtn:hover {
-  background-color: #333;
+  border-color: var(--text-sub);
+  color: var(--text);
 }
 
-/* ── Logout ── */
 .logoutBtn {
-  background-color: transparent;
-  color: #e94560;
-  border: 1px solid #e94560;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 14px;
+  background: none;
+  color: var(--text-sub);
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  font-size: 13px;
+  font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease);
 }
 
 .logoutBtn:hover {
-  background-color: #e94560;
-  color: #fff;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
-/* ── Save message ── */
+/* ── Messages ── */
 .saveMessage {
-  margin-top: 20px;
+  margin-top: 12px;
   padding: 10px 16px;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: var(--radius-s);
+  font-size: 13px;
   text-align: center;
 }
 
 .saveMessage.success {
-  background-color: #1e3a2a;
-  color: #4caf50;
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.2);
 }
 
 .saveMessage.error {
-  background-color: #3a1e1e;
-  color: #e94560;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(255, 45, 85, 0.2);
 }
+
+/* ── Card masked row ── */
+.cardMasked {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.cardIcon { font-size: 18px; }
+
+.cardForm { margin-top: 1.2rem; }
+
+.cardFormActions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* ── Card preview ── */
+.cardPreview {
+  background: linear-gradient(135deg, #1a1020 0%, #0e1525 55%, #150e1e 100%);
+  border-radius: var(--radius-m);
+  padding: 20px 24px;
+  color: #fff;
+  width: 100%;
+  max-width: 340px;
+  box-sizing: border-box;
+  margin-top: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.cardPreview::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 140px; height: 140px;
+  background: rgba(255, 45, 85, 0.07);
+  border-radius: 50%;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.cardChip {
+  width: 38px;
+  height: 28px;
+  background: linear-gradient(135deg, #c8a951 0%, #e8c96a 40%, #c8a951 60%, #a88831 100%);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.cardBrand {
+  font-size: 1rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.cardNumberDisplay {
+  display: flex;
+  gap: 0.8rem;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.cardBottom { display: flex; gap: 1.5rem; }
+
+.cardHolderSection,
+.cardExpirySection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cardLabel {
+  font-size: 0.62rem;
+  opacity: 0.55;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cardValue { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.5px; }
 
 /* ── Rental history ── */
 .historyContainer {
-  margin-top: 24px;
-  background-color: #1a1a2e;
-  border-radius: 8px;
+  margin-top: 16px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-m);
   padding: 24px;
-  border: 1px solid #2a2a4a;
+  border: 1px solid var(--border-solid);
 }
 
 .historyContainer h2 {
-  font-size: 17px;
-  color: #e0e0e0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
   margin-bottom: 16px;
+  letter-spacing: -0.2px;
 }
 
-.historyEmpty {
-  color: #aaa;
-  font-size: 14px;
-}
+.historyEmpty { color: var(--text-muted); font-size: 14px; }
 
 .historyTable {
   width: 100%;
@@ -192,55 +293,67 @@
 .historyTable td {
   padding: 10px 12px;
   text-align: left;
-  border-bottom: 1px solid #2a2a4a;
+  border-bottom: 1px solid var(--border);
 }
 
 .historyTable th {
-  color: #e94560;
+  color: var(--text-muted);
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
-.historyTable td {
-  color: #ccc;
-}
+.historyTable td { color: var(--text-sub); }
 
 .activeStatus {
-  color: #4caf50;
+  color: #22c55e;
   font-weight: 600;
 }
 
 .returnBtn {
-  background-color: transparent;
-  color: #e94560;
-  border: 1px solid #e94560;
-  border-radius: 4px;
+  background: none;
+  color: var(--text-sub);
+  border: 1px solid var(--border-solid);
+  border-radius: var(--radius-s);
   padding: 4px 10px;
   font-size: 12px;
+  font-family: inherit;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
   white-space: nowrap;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease);
 }
 
 .returnBtn:hover {
-  background-color: #e94560;
-  color: #fff;
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 @media (max-width: 600px) {
-  .accountContainer {
-    padding: 20px;
-    margin: 80px 16px 40px;
-  }
+  .accountContainer { padding: 80px 16px 40px; }
+
+  .personalDataContainer { padding: 18px 16px; }
 
   .editableField {
     flex-direction: column;
     align-items: flex-start;
+    gap: 6px;
   }
 
-  .editableField label {
-    flex: none;
-  }
+  .editableField label { flex: none; }
+
+  .editableField input { width: 100%; }
+
+  .cardMasked { flex-wrap: wrap; }
+
+  .cardFormActions { flex-direction: column-reverse; }
+  .cardFormActions .cancelBtn,
+  .cardFormActions .saveBtn { width: 100%; text-align: center; }
+
+  /* Historial: scroll horizontal en tabla */
+  .historyContainer { padding: 18px 16px; overflow-x: auto; }
+
+  .historyTable { min-width: 480px; }
+
+  .accountHeader h1 { font-size: 18px; }
 }

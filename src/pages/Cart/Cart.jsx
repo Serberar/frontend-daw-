@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { myContext } from '../../components/Context'
 import './Cart.css'
@@ -53,7 +53,6 @@ const Cart = () => {
                 src={item.posterUrl}
                 alt={item.title}
                 className='cartImage'
-                onError={e => { e.target.src = 'https://via.placeholder.com/50x75.png?text=?' }}
               />
               <div className='cartInfo'>
                 <span className='cartItemName'>{item.title}</span>
@@ -66,7 +65,7 @@ const Cart = () => {
         ))}
       </ul>
 
-      <p className='cartTotal'>Total: {state.subtotal}€</p>
+      <p className='cartTotal'>Total: {state.items.reduce((acc, i) => acc + i.total, 0)}€</p>
 
       {!state.userData && (
         <p className='cartLoginNotice'>
